@@ -11,6 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gd8_x_yyyy.UnitTesting.ActivityUtil;
+import com.example.gd8_x_yyyy.UnitTesting.ProfilPresenter;
+import com.example.gd8_x_yyyy.UnitTesting.ProfilService;
+import com.example.gd8_x_yyyy.UnitTesting.ProfilView;
 import com.example.gd8_x_yyyy.api.ApiClient;
 import com.example.gd8_x_yyyy.api.ApiInterface;
 import com.example.gd8_x_yyyy.models.Profil;
@@ -36,10 +40,11 @@ import retrofit2.Response;
 //  Done, silahkan jalankan dengan klik icon play di public class ... Kalau error, silahkan akses modul (penjelasan detail)
 
 //    TODO 7.1: silahkan tambah implements ProfilView
-public class ProfilActivity extends AppCompatActivity {
+public class ProfilActivity extends AppCompatActivity implements ProfilView {
 
     private ApiInterface apiService;
     private EditText etFirstName, etLastName, etSemester, etTanggalLahir;
+    private ProfilPresenter presenter;
     //    TODO 7.2: silahkan declare disini
 
 
@@ -60,7 +65,7 @@ public class ProfilActivity extends AppCompatActivity {
         tvTitle.setText(R.string.tambah_data);
 
         //TODO 7.3 : Tambahkan potongan code disini
-
+        presenter = new ProfilPresenter(this, new ProfilService());
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +106,7 @@ public class ProfilActivity extends AppCompatActivity {
                                 e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
-
+//                presenter.onProfilClicked();
                 //    TODO 7.4: silahkan panggil presenternya disini
 
             }
@@ -114,8 +119,49 @@ public class ProfilActivity extends AppCompatActivity {
         });
     }
 
-
     //    TODO 7.5: silahkan tambahkan atribut baru disini
-
+    @Override
+    public String getFirstName() {
+        return etFirstName.getText().toString();
+    }
+    @Override
+    public void showFirstNameError(String message) {
+        etFirstName.setError(message);
+    }
+    @Override
+    public String getLastName() {
+        return etLastName.getText().toString();
+    }
+    @Override
+    public void showLastNameError(String message) {
+        etLastName.setError(message);
+    }
+    @Override
+    public String getTanggalLahir() {
+        return etTanggalLahir.getText().toString();
+    }
+    @Override
+    public void showTanggalLahirError(String message) {
+        etTanggalLahir.setError(message);
+    }
+    @Override
+    public String getSemester() {
+        return etSemester.getText().toString();
+    }
+    @Override
+    public void showSemesterError(String message) {
+        etSemester.setError(message);
+    }
+    @Override
+    public void startMainProfil() {
+        new ActivityUtil(this).startMainProfil();
+    }
+    @Override
+    public void showProfilError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show(); }
+    @Override
+    public void showErrorResponse(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
 }
